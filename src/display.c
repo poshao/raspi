@@ -181,7 +181,13 @@ int dp_refresh()
 {
     int rs;
     memcpy(_fbuff, _buff, _buff_size);
+
+    // rs=ioctl(_fdev,FBIOGET_VSCREENINFO,&_vinfo);
+
+    // INFO("refresh %d",rs);
+
     rs = msync(_fbuff, _buff_size, MS_SYNC);
+    // // rs = msync(_fbuff, _buff_size, MS_INVALIDATE);
     if (rs)
     {
         ERROR("dp_refresh failed(%d)!", rs);

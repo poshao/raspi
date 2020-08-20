@@ -6,6 +6,9 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+#define COLOR_DARK  0x0
+#define COLOR_LIGHT 0xffffffff
+
 int dp_open(char *fb_dev);
 void dp_close();
 

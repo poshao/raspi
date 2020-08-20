@@ -1,0 +1,25 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2835";
+	
+	fragment@0 {
+		target = <&i2c1>;
+		
+		__overlay__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x0>;
+			
+			oled@3c {
+				compatible = "solomon,ssd1306-i2c";
+				reg = <0x3c>;
+				solomon,width = <0x80>;
+				solomon,height = <0x40>;
+				solomon,page-offset = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+};

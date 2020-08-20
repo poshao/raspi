@@ -1117,6 +1117,10 @@ HTTP_API const char *ft_http_sync_request(ft_http_client_t *http, const char *ur
 
 	http->error_code = http_internal_sync_request(http, url, 0, 0, 0, 0);
 
+	if(http->body_len<1){
+		return http->body;
+	}
+
 	// 解析gzip数据流
 	if (http->content_encoding == CONTENT_ENCODING_GZIP)
 	{

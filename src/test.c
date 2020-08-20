@@ -16,7 +16,7 @@ void test_showBadApple()
     {
         sprintf(filename, "%s/%08d.bmp", picDir, i);
         // printf("%s\n",f);
-        dp_image_bmp(0xffffff, filename, 0, 0);
+        dp_image_bmp(COLOR_LIGHT, filename, 0, 0);
         dp_refresh();
         usleep(33000);
     }

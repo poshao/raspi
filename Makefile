@@ -2,9 +2,9 @@ MAKE            ?=   make
 CC              ?=   gcc
 CFLAGS          :=   -Wall
 
-INCLUDE  = -I ./src/include/ \
-		   -I $(BUILD_DIR)/include/ \
-		   -I $(BUILD_DIR)/include/freetype2/
+INCLUDE  = -I /usr/include/freetype2 \
+		   -I ./src/include/ \
+		   -I $(BUILD_DIR)/include/ 
 
 LIBPATH  = -L $(BUILD_DIR)/lib/
 LIBVAR   = -Wl,-dy -lfreetype -lc -lz -lm -lc

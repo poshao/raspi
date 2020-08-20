@@ -46,30 +46,32 @@ void getWeatherInfo(WeatherInfo *info)
 
     body = ft_http_sync_request(client, url, M_GET);
 
-    DEBUG("recv body: %s", body);
-    root = cJSON_Parse(body);
-    now = cJSON_GetObjectItem(root, "now");
+    if (body != NULL)
+    {
+        DEBUG("recv body: %s", body);
+        root = cJSON_Parse(body);
+        now = cJSON_GetObjectItem(root, "now");
 
-    item = cJSON_GetObjectItem(now, "temp");
-    DEBUG("温度: %s", item->valuestring);
-    sscanf(item->valuestring, "%f", &info->temp);
+        item = cJSON_GetObjectItem(now, "temp");
+        DEBUG("温度: %s", item->valuestring);
+        sscanf(item->valuestring, "%f", &info->temp);
 
-    item = cJSON_GetObjectItem(now, "humidity");
-    DEBUG("湿度: %s", item->valuestring);
-    sscanf(item->valuestring, "%f", &info->hum);
+        item = cJSON_GetObjectItem(now, "humidity");
+        DEBUG("湿度: %s", item->valuestring);
+        sscanf(item->valuestring, "%f", &info->hum);
 
-    item = cJSON_GetObjectItem(now, "pressure");
-    DEBUG("压强: %s", item->valuestring);
-    sscanf(item->valuestring, "%f", &info->press);
+        item = cJSON_GetObjectItem(now, "pressure");
+        DEBUG("压强: %s", item->valuestring);
+        sscanf(item->valuestring, "%f", &info->press);
 
-    item = cJSON_GetObjectItem(now, "icon");
-    DEBUG("ICON: %s", item->valuestring);
-    sscanf(item->valuestring, "%d", &info->iconid);
+        item = cJSON_GetObjectItem(now, "icon");
+        DEBUG("ICON: %s", item->valuestring);
+        sscanf(item->valuestring, "%d", &info->iconid);
 
-    item = cJSON_GetObjectItem(now, "text");
-    DEBUG("TEXT: %s", item->valuestring);
-    strcpy(info->text, item->valuestring);
-
+        item = cJSON_GetObjectItem(now, "text");
+        DEBUG("TEXT: %s", item->valuestring);
+        strcpy(info->text, item->valuestring);
+    }
     ft_http_destroy(client);
     ft_http_exit(client);
     ft_http_deinit();
@@ -169,9 +171,9 @@ void statusFrame()
     swprintf(buffer, MAX_LENGTH, L"CPU: %.2f℃", getCpuTemperate());
     // dp_text(buffer, 1, 0, 0, _font, 16);
     y = 0;
-    dp_text(L"C", 1, 3, y - 2, _font, 18);
-    dp_rectangle(1, 0, y, 17, y + 17);
-    dp_text(buffer, 1, 24, y - 2, _font, 16);
+    dp_text(L"C", COLOR_LIGHT, 3, y - 2, _font, 18);
+    dp_rectangle(COLOR_LIGHT, 0, y, 17, y + 17);
+    dp_text(buffer, COLOR_LIGHT, 24, y - 2, _font, 16);
 
     // 内存信息绘制
     getMemInfo(&mem_total, &mem_usage);
@@ -179,10 +181,10 @@ void statusFrame()
 
     y = 20;
     // 内存信息块,width:128px height:18px
-    dp_text(L"M", 1, 2, y - 2, _font, 18);
-    dp_rectangle(1, 0, y, 17, y + 17);
-    dp_processbar_LR(1, 24, y + 13, 104, mem_usage);
-    dp_text(buffer, 1, 24, y - 2, _font, 14);
+    dp_text(L"M", COLOR_LIGHT, 2, y - 2, _font, 18);
+    dp_rectangle(COLOR_LIGHT, 0, y, 17, y + 17);
+    dp_processbar_LR(COLOR_LIGHT, 24, y + 13, 104, mem_usage);
+    dp_text(buffer, COLOR_LIGHT, 24, y - 2, _font, 14);
 
     dp_refresh();
     // dp_text(L"CPU: 44.39℃ ");
@@ -247,7 +249,7 @@ void timer_update()
 {
     static int weather_update_tick = 0;
     static int color_change_tick = 0;
-    static int color = ~0;
+    static int color = COLOR_LIGHT;
 
     if (weather_update_tick++ > 300)
     {
@@ -262,6 +264,11 @@ void timer_update()
     }
     // DEBUG("timer update:  %d\n",weather_update_tick);
     weatherFrame(color);
+}
+
+void timer_update_test()
+{
+    statusFrame();
 }
 
 int main(int argc, char **argv)
@@ -300,6 +307,7 @@ int main(int argc, char **argv)
     timer.it_interval.tv_usec = 0;
 
     signal(SIGALRM, timer_update);
+    // signal(SIGALRM, timer_update_test);
     if (0 > setitimer(ITIMER_REAL, &timer, NULL))
     {
         perror("set timer failed");

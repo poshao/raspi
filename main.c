@@ -1,5 +1,6 @@
 #include "display.h"
 #include "log.h"
+#include <unistd.h>
 
 #include "test.h"
 
@@ -14,8 +15,8 @@ int main(int argc, char **argv)
     // test();
     // test_Convert2BitBMP();
     // test_Convert2BitBMP_Folder();
-    test_getWeather();
-    return 0;
+    // test_getWeather();
+    // return 0;
 
     dp_open("/dev/fb1");
     // dp_getScreenInfo();
@@ -23,7 +24,8 @@ int main(int argc, char **argv)
 
     // dp_beginDraw();
 
-    // dp_fillScreen(0);
+    dp_fillScreen(COLOR_DARK);
+    
 
     // // 一堆点
     // for(int i=0;i<64;i+=1){
@@ -32,23 +34,26 @@ int main(int argc, char **argv)
 
     // // 一堆线
     // for(int i=0;i<64;i+=2){
-    //     dp_line(1,0,i,127-i,i);
+    //     dp_line(COLOR_LIGHT,0,i,127-i,i);
     // }
 
     // // 一堆方框
     // for(int i=0;i<32;i+=2){
-    //     dp_rect(1,i,i,127-i,63-i);
+    //     dp_rectangle(COLOR_LIGHT,i,i,127-i,63-i);
     // }
 
     // // 一堆圆圈
     // for(int i=0;i<128;i+=6){
-    //     dp_circle(1,64,32,i);
+    //     dp_circle(COLOR_LIGHT,64,32,i);
     // }
 
-    // dp_text(0xffff,10,10,L"hel0lo \n123测试");
+    // dp_text(L"hel0lo \n123测试",1,0,0,);
 
     test_showBadApple();
 
     // dp_endDraw();
+    dp_refresh();
+
+    // usleep(100000);
     dp_close();
 }

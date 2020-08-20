@@ -9,6 +9,7 @@
 
 * [FreeType](https://www.freetype.org/) 字体渲染引擎
 * [zlib](https://zlib.net/) 压缩/解压缩库
+* cJSON
 
 ### 运行方法
 
