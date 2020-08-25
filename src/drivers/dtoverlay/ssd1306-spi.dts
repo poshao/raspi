@@ -34,7 +34,11 @@
 				reg = <0>;
 				pinctrl-names = "default";
 				pinctrl-0 = <&ssd1306_pins>;
-				spi-max-frequency=<10000000>;
+
+				reset-gpios = <&gpio 25 0>;
+				dc-gpios = <&gpio 24 0>;
+
+				spi-max-frequency = <10000000>;
 				solomon,width = <128>;
 				solomon,height = <64>;
 				solomon,page-offset = <0>;

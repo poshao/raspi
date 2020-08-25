@@ -1,13 +1,14 @@
 #ARCH=arm
 #CROSS_COMPILE=/workplace/compile/raspiTools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-
 #KERN_DIR =/home/shaozi/workplace/compile/raspiLinux
-# KERN_DIR = ~/linux
+KERN_DIR = ~/linux
 MAKE=make
 
 ifneq ($(KERNELRELEASE),)
     obj-m := ssd1306.o
 else
-    KERN_DIR ?= /usr/src/linux-headers-$(shell uname -r)/
+    KERN_DIR ?= /usr/src/linux-headers-$(shell uname -r)/build
+	# KERN_DIR ?=/lib/modules/`uname -r`/build
     PWD := $(shell pwd)
 endif
 
@@ -40,6 +41,7 @@ unloadDriver:
 loadDev:
 	dtc -I dts -O dtb -o ./dtoverlay/ssd1306-spi.dtbo ./dtoverlay/ssd1306-spi.dts
 	sudo dtoverlay ./dtoverlay/ssd1306-spi.dtbo
+	sleep 1
 	dmesg
 
 unloadDev:
